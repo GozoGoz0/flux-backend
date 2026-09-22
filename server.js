@@ -106,20 +106,6 @@ app.get('/api/health', (_req, res) => {
 });
 
 /* ----------------------------- auth ------------------------------- */
-// Алиас — некоторые клиенты шлют POST /api/auth вместо /api/auth/login
-app.post('/api/auth', (req, res) => {
-  const { email, password } = req.body || {};
-  const user = users.find(
-    (u) => u.email.toLowerCase() === String(email || '').toLowerCase()
-  );
-  if (!user || !bcrypt.compareSync(String(password || ''), user.password)) {
-    return res.status(401).json({ error: 'Invalid email or password' });
-  }
-  const token = signToken(user);
-  setAuthCookie(res, token);
-  res.json({ token, user: publicUser(user) });
-});
-
 app.post('/api/auth/signup', (req, res) => {
   const { email, password, name } = req.body || {};
   if (!email || !password) {
