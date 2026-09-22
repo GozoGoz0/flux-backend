@@ -1,28 +1,34 @@
-# Flux Backend
+# Flux / Ploshadka Backend
 
-Чистый JS бэк для Flux (без TypeScript).
+Express API без внешней БД (данные в памяти).
 
-## Локальный запуск
+## Локально
 
 ```bash
 npm install
 npm start
 ```
 
-## Деплой на Render
+## Render
 
-1. Push в GitHub
-2. Render → New Web Service → Connect GitHub
-3. Build Command: `npm install`
-4. Start Command: `npm start`
-5. Environment Variables:
-   - DATABASE_URL (из Render PostgreSQL)
-   - JWT_SECRET
-   - NODE_ENV=production
+- Build Command: `npm install`
+- Start Command: `npm start`
+- Env: `JWT_SECRET` (любая случайная строка)
 
-## Endpoints
+## Дефолтный логин
 
-- GET /api/health
-- POST /api/auth/signup
+- `admin@test.com` / `admin123`
+
+## Роуты
+
+- GET  /api/health
 - POST /api/auth/login
-- POST /api/invites/validate
+- POST /api/auth/signup
+- POST /api/auth/logout
+- GET  /api/auth/me
+- GET  /api/items
+- POST /api/items
+- PUT  /api/items/:id
+- DELETE /api/items/:id
+
+Данные сбрасываются при каждом рестарте сервиса.
