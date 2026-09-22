@@ -211,3 +211,18 @@ app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
   console.log(`Seed login: admin@test.com / admin123`);
 });
+
+// Алиас — некоторые клиенты шлют POST /api/auth вместо /api/auth/login
+
+app.post('/api/auth', async (req, res) => {
+  const { email, password } = req.body || {};
+  const user = users.find(
+    (u) => u.email.toLowerCase() === String(email || '').toLowerCase()
+  );
+  if (!user || !bcrypt.compareSync(String(password || ''), user.password)) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+  const token = signToken(user);
+  setAuthCookie(res, token);
+  res.json({ token, user: publicUser(user) });
+});
